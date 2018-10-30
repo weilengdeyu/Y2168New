@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.happy.entity">
+    <class name="Emp" table="Emp" schema="y2168">
+        <id name="empno" column="empno">
+           <generator class="native"></generator>
+        </id>
+        <property name="empname" />
+        <property name="empcity" />
+        <!--多对一：  emp多的一方   dept一的一方-->
+        <many-to-one  name="dept" class="Dept" column="deptno" lazy="proxy"></many-to-one>
+    </class>
+</hibernate-mapping>

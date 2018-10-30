@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!--根节点-->
+<hibernate-mapping package="cn.happy.entity">
+    <class name="Dept" table="Dept" schema="y2168">
+        <id name="deptno" column="deptno">
+            <!--
+            -->
+            <generator class="native"></generator>
+        </id>
+        <property name="deptname" />
+        <!--一对多 1个部门  多个员工-->
+        <!--inverse:true：放弃维护关系：不去干预底层集合数据改变生成sql的策略-->
+        <set name="emps" cascade="save-update,delete" inverse="true" order-by="empno desc">
+            <key column="deptno"></key>
+            <one-to-many class="Emp"></one-to-many>
+        </set>
+    </class>
+</hibernate-mapping>
