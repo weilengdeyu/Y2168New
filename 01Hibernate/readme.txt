@@ -127,7 +127,82 @@ session可以看成是经过特殊加工，包装过的一个增强版的Connect
 1.离线查询DetachedCriteria
  可以将条件拼接和真实的查询分离到 Service和DAO
  可以在没有session的情况下进行操作
-2.
+2.一级缓存
+缓存：是计算机领域的概念，它介于应用程序和永久性数据存储源之间。
+
+缓存：一般人的理解是在内存中的一块空间，其实也可以将二级缓存配置到硬盘。
+用白话来说，就是一个存储数据的容器。我们关注的是，哪些数据需要被放入二级缓存。
+
+缓存作用：降低应用程序直接读写数据库的频率，从而提高程序的运行性能。
+缓存中的数据是数据存储源中数据的拷贝。缓存的物理介质通常是【内存】。
+
+01.Session内的缓存即一级缓存,内置且不能被卸载，一个事务内有效。在这个空间存放了相互关联的Java对象，
+这种位于Session缓存内的对象也被称为持久化对象，Session负责根据持久化对象的状态变化来同步更新数据库。
+
+02.Session为应用程序提供了管理缓存的方法:
+evict(Object o)
+clear()
+03.金牌结论一级缓存
+一级缓存的生命周期和session的生命周期一致，当前session一旦关闭，一级缓存就消失了，
+因此一级缓存也叫session级的缓存或事务级缓存，一级缓存只存实体对象，它不会缓存一般的对象属性（查询缓存可以），
+即当获得对象后，就将该对象缓存起来，如果在同一session中再去获取这个对象时，它会先判断在缓存中有没有该对象的id，
+如果有则直接从缓存中获取此对象，反之才去数据库中取，取的同时再将此对象作为一级缓存处理。
+
+二级缓存
+   一定是可以配置的，默认情况下Hibernate是关闭二级缓存的。
+   MyBatis 默认是开启二级缓存。MyBatis默认虽然开启了二级缓存 ，但不能使用。
+
+Hibernate 3 或者  4  注意：
+
+
+配置二级缓存步骤
+1.添加依赖
+ <!--支持缓存的核心包-->
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+        <!--支持缓存的依赖包-->
+        <dependency>
+            <groupId>backport-util-concurrent</groupId>
+            <artifactId>backport-util-concurrent</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <!--这个jar包至关重要-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>5.0.6.Final</version>
+        </dependency>
+
+ 2.在hibernarte.cfg.xml中加入两个<property>
+   2.1  hibernate.cache.use_second_level_cache  true
+    <property name="hibernate.cache.use_second_level_cache">true</property>
+     *3.配置二级缓存的供应商
+     <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+   2.2  缓存供应商
+   EHCacheProvider
+   hibernate5中有区别  ：EhCacheRegionFactory实现类
+
+
+ 3.设置你要缓存的类以及他的策略
+    <class-cache class="cn.happy.entity.Dept" usage="read-write"></class-cache>、
+
+ 4.在resource目录下添加一个文件 ehcache.xml文件
+
+
+小Tip：
+hibernate-core  和 hibernate-ehcache 两个版本一致。
+
+
+4.二级缓存内存数据存储结构
+1.缓存+++博客
+30-40页 MyBatis或者是Spring文档：
+2.信息MIS管理雏形
+
+
+
 
 
 

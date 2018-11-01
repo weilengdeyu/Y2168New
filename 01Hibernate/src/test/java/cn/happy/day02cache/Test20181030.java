@@ -20,6 +20,14 @@ import java.util.List;
  */
 public class Test20181030 {
 
+    //关于一些系统级别的路径的测试
+    @Test
+    public void t7(){
+        System.out.println(System.getProperty("java.io.tmpdir"));
+        System.out.println(System.getProperty("java.home"));
+        System.out.println(System.getProperty("user.dir"));
+    }
+
     //二级缓存存在性的证明
     @Test
     public void t6() {
@@ -63,13 +71,13 @@ public class Test20181030 {
         for (Dept dept:list) {
             System.out.println(dept.getDeptname());
         }
-        System.out.println("======================");
+      /*  System.out.println("======================");
         //泛型迭代器
-         Iterator<Dept> iterate = query.iterate();
-           while (iterate.hasNext()){
-                Dept dept = iterate.next();
-                System.out.println(dept.getDeptname());
-            }
+        Iterator<Dept> iterate = query.iterate();
+       while (iterate.hasNext()){
+            Dept dept = iterate.next();
+            System.out.println(dept.getDeptname());
+        }*/
       /*  Dept dept = session.load(Dept.class, 1);
         System.out.println(dept.getDeptname());*/
         /*List<Dept> list2=query.list();

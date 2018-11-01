@@ -21,6 +21,7 @@
     Subdirectories can be specified below the property e.g. java.io.tmpdir/one
 
     -->
+    <!--硬盘存储位置：被标注的目录，检索的速度和性能得到了很好的提升。-->
     <diskStore path="java.io.tmpdir"/>
 
     <!--
@@ -271,7 +272,7 @@
     created programmtically using CacheManager.add(String cacheName)
     -->
     <defaultCache
-            maxElementsInMemory="10000"
+            maxElementsInMemory="1"
             eternal="false"
             timeToIdleSeconds="120"
             timeToLiveSeconds="120"
