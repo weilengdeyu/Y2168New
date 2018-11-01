@@ -34,34 +34,38 @@ public class Test20181027 {
     @Test
     public void detachedCriteriaTest(){
         Session session = HibernateUtil.getSession();
+        //真实的分层开发中，如下三行code可以位于service层   应用服务器
         DetachedCriteria detachedCriteria=DetachedCriteria.forClass(Emp.class);
         detachedCriteria.createAlias("dept", "d");
         detachedCriteria.add(Restrictions.eq("d.deptname", "开发部"));
+        // DB Server
         List<Emp> list =detachedCriteria.getExecutableCriteria(session).list();
         for (Emp emp : list) {
             System.out.println(emp.getEmpname());
         }
     }
 
-
+  //分组   投影的数据   部门编号     总人数
   @Test
   public void test11(){
       Session session = HibernateUtil.getSession();
       //开启事务
       Transaction tx=session.beginTransaction();
+      //session之后我们才可以去做查询  。session和connection :连接通道打通之后，才可以操作数据
       Criteria criteria=session.createCriteria(Emp.class);
       Projection projection = Projections.groupProperty("dept.deptno");
       Projection p2 = Projections.rowCount();
-      criteria.setProjection(Projections.projectionList().add(projection).add(p2));
-      List<Object[]> list = criteria.list();
-      for (Object[] item:list) {
-          System.out.println(item[0]+"\t"+item[1]);
+      criteria.setProjection(Projections.projectionList().add(projection));
+      //List<Object[] >数组  ：
+      List<Integer> list = criteria.list();
+      for (Integer item:list) {
+          System.out.println(item+"\t");
       }
       tx.commit();
   }
 
-
-    //10.分页  查询员工表中的4-6条(第二页)数据，每页3条数据
+    //10.分页
+    // 查询员工表中的4-6条(第二页)数据，每页3条数据
     @Test
     public void test10(){
         Session session = HibernateUtil.getSession();
@@ -70,9 +74,10 @@ public class Test20181027 {
         int pageSize=3;//每页3条记录
         int pageIndex=2; //显示第二页的数据
         Criteria criteria2=session.createCriteria(Emp.class);
-        //数据的拎取
+        //数据的拎取   下标   ，第一页数据的下标是从0开始显示的
         criteria2.setFirstResult((pageIndex-1)*pageSize);
-        criteria2.setMaxResults(pageSize);
+        //每页的数据量
+        criteria2.setMaxResults(pageSize);  //页面承载的数据量
         List<Emp> list = criteria2.list();
         for (Emp emp : list) {
             System.out.println(emp.getEmpname());
@@ -87,8 +92,8 @@ public class Test20181027 {
         Transaction tx=session.beginTransaction();
         Criteria criteria=session.createCriteria(Emp.class);
         Criterion criterion= Restrictions.gt("empno",0);
-
-        criteria.add(criterion).addOrder(Order.asc("empno"));
+        criteria.add(criterion).
+                addOrder(Order.asc("empno")/*.desc("empcity")*/);
         List<Emp> list = criteria.list();
         for (Emp emp : list) {
             System.out.println(emp.getEmpname());
@@ -105,7 +110,7 @@ public class Test20181027 {
         Session session = HibernateUtil.getSession();
         Transaction tx=session.beginTransaction();
         Criteria criteria=session.createCriteria(Emp.class);
-        //01.构建所有可能的条件
+        //01.构建所有可能的条件  视图model
         EmpCondition condition=new EmpCondition();
         /*condition.setEmpno(0);*/
         condition.setEmpcity("bj");

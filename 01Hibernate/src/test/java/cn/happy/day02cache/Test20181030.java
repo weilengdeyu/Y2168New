@@ -4,7 +4,6 @@ package cn.happy.day02cache;/**
 
 import cn.happy.entity.Dept;
 import cn.happy.util.HibernateUtil;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -21,12 +20,29 @@ import java.util.List;
  */
 public class Test20181030 {
 
-    //3.证明iterator  N+1
+    //二级缓存存在性的证明
+    @Test
+    public void t6() {
+        Session session= HibernateUtil.getSession();
+        Dept dept = session.load(Dept.class, 1);
+        System.out.println(dept.getDeptname());
+        HibernateUtil.closeSession();
+        System.out.println("=============================");
+        Session session2= HibernateUtil.getSession();
+        Dept dept2 = session2.load(Dept.class, 1);
+        System.out.println(dept2.getDeptname());
+        HibernateUtil.closeSession();
+    }
+
+    //3.证明iterator()  N+1
     @Test
     public void t5(){
         Session session= HibernateUtil.getSession();
         String hql="from Dept";
         Query query = session.createQuery(hql);
+        //iterrable
+        //Enumerable
+
         Iterator<Dept> iterate = query.iterate();
         while (iterate.hasNext()){
             Dept dept = iterate.next();
@@ -48,12 +64,12 @@ public class Test20181030 {
             System.out.println(dept.getDeptname());
         }
         System.out.println("======================");
-
-        /* Iterator<Dept> iterate = query.iterate();
-       while (iterate.hasNext()){
-            Dept dept = iterate.next();
-            System.out.println(dept.getDeptname());
-        }*/
+        //泛型迭代器
+         Iterator<Dept> iterate = query.iterate();
+           while (iterate.hasNext()){
+                Dept dept = iterate.next();
+                System.out.println(dept.getDeptname());
+            }
       /*  Dept dept = session.load(Dept.class, 1);
         System.out.println(dept.getDeptname());*/
         /*List<Dept> list2=query.list();
@@ -71,7 +87,9 @@ public class Test20181030 {
         Transaction tx=session.beginTransaction();
         Dept dept = session.load(Dept.class,1);
         System.out.println(dept.getDeptname());
+        tx.commit();
         HibernateUtil.closeSession();
+
         System.out.println("==================");
         Session session2 = HibernateUtil.getSession();
         Transaction tx2=session2.beginTransaction();
@@ -82,12 +100,15 @@ public class Test20181030 {
     }
 
     @Test
-    //1.检索所有的部门集合
+    //1.印记     一级缓存存在的
     public void t1(){
+        //1.ThreadLocal
         Session session = HibernateUtil.getSession();
+
         Transaction tx=session.beginTransaction();
         Dept dept = session.load(Dept.class,1);
         System.out.println(dept.getDeptname());
+
         System.out.println("==================");
         Dept dept2=session.get(Dept.class,1);
         System.out.println(dept2.getDeptname());

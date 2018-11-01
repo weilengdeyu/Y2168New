@@ -91,6 +91,80 @@ hbase
 Login
 Business  Model
 
+4.Order.asc(),Order.desc()  问题是，当我通过Order.asc()调度完成后，返回的是一个Order对象，Java领域，知道
+对象名.静态方法（）被支持的，但是我们只能点出来desc(），但是asc()无法再次调度。
+如果我们调度多次排序的方法，以最后一次为准。
+
+5.分组的底层原理
+王鸿：:::::::
+
+6.Criteria 接口   作为 QBC检索基础接口   session.createCriteria()
+
+  Criterion 接口    做的是查询的条件   ，转向了 一个类 Restrictions.eq()    返回 ：Criterion
+
+  Projection 投影 Projections类，  count()  rowCount()
+
+  离线 ：
+  attache  附加
+
+  detach  分离
+
+
+hibernate 中的session你如何看待？元芳你怎么看》？
+ session实例  由工厂创建
+ session 每一个线程，都有一份自己的session
+ Hibernate 中 Session  是一个接口，他的实现类 SessionImpl  -----》重要的属性和属性 ，connection
+session可以看成是经过特殊加工，包装过的一个增强版的Connection
+周二，
+周六的时候:自己的微信公众号。
+
+2018年10月30日12:31:24
+1.MyBatis 20页文档
+2.聊聊Hibernate中的session
+
+
+2018年11月1日09:17:37
+1.离线查询DetachedCriteria
+ 可以将条件拼接和真实的查询分离到 Service和DAO
+ 可以在没有session的情况下进行操作
+2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
