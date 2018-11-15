@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <!--我更改Struts.xml的节点，不需要重启tomcat-->
+    <constant name="struts.devMode" value="true"></constant>
+    <constant name="struts.i18n.encoding" value="utf-8">
+    </constant>
+    <constant name="struts.ui.theme" value="simple"></constant>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+    <package name="default" namespace="/" extends="struts-default">
+        <!--第一个Action-->
+      <action name="helloAction" class="day01.HelloAction">
+          <result name="success">/index.jsp</result>
+      </action>
+        <!-- 登陆的action -->
+        <action name="login" class="day02.LoginAction">
+            <result name="success">
+                /day02/success.jsp
+            </result>
+            <result name="login">
+                /day02/login.jsp
+            </result>
+        </action>
+
+        <!-- 登陆的action -->
+        <action name="loginbean" class="day02.LoginActionBean">
+            <result name="success">
+                /day02/success.jsp
+            </result>
+            <result name="login">
+                /day02/login.jsp
+            </result>
+        </action>
+        
+
+    </package>
+    <include file="struts-day02.xml"/>
+    <include file="struts-day04.xml"/>
+    <include file="struts-day05.xml"/>
+</struts>
